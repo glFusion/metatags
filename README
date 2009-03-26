@@ -1,0 +1,75 @@
+MetaTags Plugin for glFusion
+Version: 1.0.1
+
+For the latest documentation, please see
+
+	http://www.glfusion.org/wiki/doku.php?id=metatags:start
+
+LICENSE
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+
+OVERVIEW
+
+The Metatags plugin allows you to set
+
+ <meta name="keywords" content="some,key,words">
+
+and
+
+  <meta name="descrition" content="Some description">
+
+meta tags in HTML <head> section according to the page content. Currently meta
+tags are supported in articles and staticpages.
+
+USAGE
+
+The Metatags plugin uses glFusion's autolink feature. If you have disabled it,
+please enable the feature in Configuration UI (Miscellaneous - Miscellaneous -
+Disable Autolinks).
+
+In an article or a staticpage, if you write [meta:key comma_separated_keywords]
+as an autotag, this tag will be converted into
+
+  <meta name="keywords" content="comma_separated_keywords">.
+
+Likewise, if you write [meta:desc description of the current page], the tag
+will be converted into <meta name="description" content="description of the
+current page">. In both cases, autotags themselves are not visible in the
+content except for the editor(s).
+
+Caution:Your keywords and description MUST NOT contain a right square
+bracket(']').
+
+CONFIGURATION
+
+Once you have installed the Metatags plugin, it works well without manual
+configuration. However, if you would like to change the name of autotag
+(default value is 'meta') or keys translated into meta tag keys (default
+values are 'key' and 'desc'), you can set up the plugin through
+Configuration UI (http://yoursite/admin/configuration.php).
+
+    * Autotag name: the name glFusion recognizes as an autotag (meta in the
+      above USAGE)
+    * Replace: keys (the label left to an textarea) will be converted into
+      meta tag keys (the string in an textarea) (key and desc in the above
+      USAGE)
+    * Default keywords (comma separated): keywords used globally when no
+      article or staticpage is displayed, e.g., at the site's homepage
+    * Default description: description used globally when no article or
+      staticpage is displayed, e.g., at the site's homepage
+
+INSTALLATION
+
+The MetaTags Plugin uses the glFusion automated plugin installer.
+Simply upload the distribtuion using the glFusion plugin installer located in
+the Plugin Administration page.
+
+UPGRADING
+
+The upgrade process is identical to the installation process, simply upload
+the distribution from the Plugin Administration page.
+
