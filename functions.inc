@@ -116,7 +116,11 @@ function METATAGS_loadConfig() {
 	if ($config->group_exists('metatags')) {
 		$temp = $config->get_config('metatags');
 		if (is_array($temp) AND (count($temp) > 0)) {
-			$_METATAGS_CONF = array_merge($_METATAGS_CONF, $temp);
+		    if ( is_array($_METATAGS_CONF ) ) {
+			    $_METATAGS_CONF = array_merge($_METATAGS_CONF, $temp);
+			} else {
+			    $_METATAGS_CONF = $temp;
+			}
 		}
 	}
 }
