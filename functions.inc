@@ -87,18 +87,21 @@ function plugin_upgrade_metatags() {
 
 	// Do upgrading
 
-// 	switch ($pi_version) {
-// 		case '':
-// 		break;
-//
-// 		case '':
-// 		break;
-//
-// 	}
+	switch ($pi_version) {
+		case '1.0.0':
+		case '1.0.1':
+		case '1.0.2':
+		case '1.0.3':
+			$me = 'metatags';
+		    $c = config::get_instance();
+			$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, $me);
+        default :
+            break;
+	}
 
 	// Update plugin info
 
-	$result = DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = \"{$_METATAGS_CONF['pi_version']}\" WHERE (pi_name = 'metatags')");
+	$result = DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '".$_METATAGS_CONF['pi_version']."' WHERE (pi_name = 'metatags')");
 	COM_errorLog(ucfirst("metatags") . " plugin was successfully updated to version {$_METATAGS_CONF['pi_version']}.");
 
 	return TRUE;
@@ -167,7 +170,7 @@ function METATAGS_str($index, $noesc = FALSE) {
 * @return     string  page content
 */
 function METATAGS_getStaticpage($id) {
-	global $_CONF, $_TABLES, $_SP_CONF;
+	global $_CONF, $_TABLES, $_SP_CONF, $_METATAGS_CONF;
 
 	$retval = '';
 
@@ -183,26 +186,29 @@ function METATAGS_getStaticpage($id) {
 		$sp_content = stripslashes($A['sp_content']);
 		$sp_php     = $A['sp_php'];
 
-		if ($_SP_CONF['allow_php'] == 1) {
-			// Check for type (ie html or php)
-			if ($sp_php == 1) {
-				$retval .= eval($sp_content);
-			} else if ($sp_php == 2) {
-				ob_start();
-				@eval($sp_content);
-				$retval .= ob_get_contents();
-				ob_end_clean();
+		if ($_METATAGS_CONF['sp_php']) {
+			if ($_SP_CONF['allow_php'] == 1) {
+				// Check for type (ie html or php)
+				if ($sp_php == 1) {
+					$retval = @eval($sp_content);
+				} else if ($sp_php == 2) {
+					ob_start();
+					@eval($sp_content);
+					$retval = ob_get_contents();
+					ob_end_clean();
+				} else {
+					$retval = $sp_content;
+				}
 			} else {
-				$retval .= $sp_content;
+				if ($sp_php != 0) {
+					COM_errorLog ("PHP in static pages is disabled.  Can not display page '$id'.", 1);
+				} else {
+					$retval = $sp_content;
+				}
 			}
 		} else {
-			if ($sp_php != 0) {
-				COM_errorLog ("PHP in static pages is disabled.  Can not display page '$id'.", 1);
-			} else {
-				$retval .= $sp_content;
-			}
+			$retval = $sp_content;
 		}
-
 	}
 
 	return $retval;
@@ -237,6 +243,9 @@ function plugin_getheadercode_metatags() {
 	$id = '';
 	if (isset($match[1])) {
 		$id = COM_applyFilter($match[1]);
+		if ($id == '') {
+			$type= '';
+		}
 	}
 
 	// Retrieve the relevant content from DB
@@ -266,6 +275,8 @@ function plugin_getheadercode_metatags() {
 			break;
 	}
 
+	$tags = array();
+
 	// Check if the content has the autotag
 	if ($target != '') {
 		$autotag = '|\[' . preg_quote($_METATAGS_CONF['tagname'], '|')
@@ -273,33 +284,31 @@ function plugin_getheadercode_metatags() {
 		$num    = preg_match_all($autotag, $target, $match);
 		$tokens = array_keys($_METATAGS_CONF['replace']);
 
-		// Convert autotags into <meta> headers
 		if ($num > 0) {
 			foreach ($match[1] as $m) {
 				list($key, $value) = explode(' ', $m, 2);
-				$key = strtolower($key);
-				if (in_array($key, $tokens)) {
-					$retval .= '<meta name="'
-							.  METATAGS_esc($_METATAGS_CONF['replace'][$key])
-							.  '" content="' . METATAGS_esc($value) . '"'
-							.  XHTML . '>' . LB;
+				$key   = strtolower($key);
+				$value = trim($value);
+				if (in_array($key, $tokens) AND ($value != '')) {
+					$tags[$_METATAGS_CONF['replace'][$key]] = $value;
 				}
 			}
 		}
-	} else {
-		// No tags found.  Let's check if default keywords or description are
-		// defined.
-		$keywords = trim($_METATAGS_CONF['keywords']);
-		if ($keywords != '') {
-			$retval .= '<meta name="keywords" content="'
-					.  METATAGS_esc($keywords) . '"' . XHTML . '>' . LB;
-		}
+	}
 
-		$description = trim($_METATAGS_CONF['description']);
+	if (!isset($tags['keywords']) AND isset($_METATAGS_CONF['keywords'])) {
+		$tags['keywords'] = $_METATAGS_CONF['keywords'];
+	}
 
-		if ($description != '') {
-			$retval .= '<meta name="description" content="'
-					.  METATAGS_esc($description) . '"' . XHTML . '>' . LB;
+	if (!isset($tags['description']) AND isset($_METATAGS_CONF['description'])) {
+		$tags['description'] = $_METATAGS_CONF['description'];
+	}
+
+	if (count($tags) > 0) {
+		// Convert autotags into <meta> headers
+		foreach ($tags as $key => $value) {
+			$retval .= '<meta name="' . $key . '" content="'
+					.  METATAGS_esc($value) . '"' . XHTML . '>' . LB;
 		}
 	}
 

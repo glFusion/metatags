@@ -51,6 +51,7 @@ $LANG_confignames['metatags'] = array(
 	'replace'     => 'Replace',
 	'keywords'    => 'Default keywords (comma separated)',
 	'description' => 'Default description',
+	'sp_php'      => 'Execute PHP in staticpages',
 );
 
 $LANG_configsubgroups['metatags'] = array(

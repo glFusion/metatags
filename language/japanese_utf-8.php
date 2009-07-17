@@ -51,6 +51,7 @@ $LANG_confignames['metatags'] = array(
 	'replace'     => '置換ルール',
 	'keywords'    => 'keywordsの初期値（コンマで区切る）',
 	'description' => 'descriptionの初期値',
+	'sp_php'      => '静的ページでPHPを実行する',
 );
 
 $LANG_configsubgroups['metatags'] = array(
