@@ -74,17 +74,14 @@ function plugin_initconfig_metatags() {
 
 	$me = 'metatags';
     $c = config::get_instance();
-    if (!$c->group_exists($me)) {
-
-        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, $me);
-        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, $me);
-		$c->add('tagname', 'meta', 'text', 0, 0, NULL, 10, TRUE, $me);
-		$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description',), '*text', 0, 0, NULL, 20, TRUE, $me);
-		$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, $me);
-        $c->add('fs_default', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, $me);
-		$c->add('keywords', NULL, 'text', 0, 0, NULL, 10, TRUE, $me);
-		$c->add('description', NULL, 'text', 0, 0, NULL, 12, TRUE, $me);
-    }
+    $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, $me);
+    $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, $me);
+	$c->add('tagname', 'meta', 'text', 0, 0, NULL, 10, TRUE, $me);
+	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description',), '*text', 0, 0, NULL, 20, TRUE, $me);
+	$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, $me);
+    $c->add('fs_default', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, $me);
+	$c->add('keywords', NULL, 'text', 0, 0, NULL, 10, TRUE, $me);
+	$c->add('description', NULL, 'text', 0, 0, NULL, 12, TRUE, $me);
 
     return TRUE;
 }
