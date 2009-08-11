@@ -38,21 +38,6 @@ if (!defined ('GVERSION')) {
     die ('This file can not be used on its own.');
 }
 
-/**
-* Metatags default settings
-*
-* Initial Installation Defaults used when loading the online configuration
-* records.  These settings are only used during the initial installation
-* and not referenced any more once the plugin is installed
-*
-*/
-global $_METATAGS_DEFAULT;
-
-$_METATAGS_DEFAULT = array();
-
-// Whether to execute PHP in staticpages.  TRUE = execute, FALSE = otherwise
-// @since v1.0.3
-$_METATAGS_DEFAULT['sp_php'] = FALSE;
 
 /**
 * Initialize Metatags plugin configuration
@@ -66,22 +51,18 @@ $_METATAGS_DEFAULT['sp_php'] = FALSE;
 *
 */
 function plugin_initconfig_metatags() {
-    global $_METATAGS_CONF, $_METATAGS_DEFAULT;
+    global $_METATAGS_CONF;
 
-    if (is_array($_METATAGS_CONF) AND (count($_METATAGS_CONF) > 1)) {
-        $_METATAGS_DEFAULT = array_merge($_METATAGS_DEFAULT, $_METATAGS_CONF);
-    }
-
-	$me = 'metatags';
     $c = config::get_instance();
-    $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, $me);
-    $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, $me);
-	$c->add('tagname', 'meta', 'text', 0, 0, NULL, 10, TRUE, $me);
-	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description',), '*text', 0, 0, NULL, 20, TRUE, $me);
-	$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, $me);
-    $c->add('fs_default', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, $me);
-	$c->add('keywords', NULL, 'text', 0, 0, NULL, 10, TRUE, $me);
-	$c->add('description', NULL, 'text', 0, 0, NULL, 12, TRUE, $me);
+    $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, 'metatags');
+    $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, 'metatags');
+	$c->add('tagname', 'meta', 'text', 0, 0, NULL, 10, TRUE, 'metatags');
+	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description','au' => 'author','author' => 'author','gen' => 'generator','generator' => 'generator','robots' => 'robots',), '*text', 0, 0, NULL, 20, TRUE, 'metatags');
+	$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, 'metatags');
+	$c->add('show_editor', false, 'select', 0, 0, 1, 40, TRUE, 'metatags');
+    $c->add('fs_default', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, 'metatags');
+	$c->add('keywords', NULL, 'text', 0, 0, NULL, 10, TRUE, 'metatags');
+	$c->add('description', NULL, 'text', 0, 0, NULL, 12, TRUE, 'metatags');
 
     return TRUE;
 }

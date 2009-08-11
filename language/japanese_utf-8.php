@@ -52,6 +52,7 @@ $LANG_confignames['metatags'] = array(
 	'keywords'    => 'keywordsの初期値（コンマで区切る）',
 	'description' => 'descriptionの初期値',
 	'sp_php'      => '静的ページでPHPを実行する',
+	'show_editor' => 'Display autotags for content edtiors',
 );
 
 $LANG_configsubgroups['metatags'] = array(

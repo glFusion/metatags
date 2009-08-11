@@ -92,9 +92,10 @@ function plugin_upgrade_metatags() {
 		case '1.0.1':
 		case '1.0.2':
 		case '1.0.3':
-			$me = 'metatags';
 		    $c = config::get_instance();
-			$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, $me);
+			$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, 'metatags');
+        	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description','au' => 'author','author' => 'author','gen' => 'generator','generator' => 'generator','robots' => 'robots',), '*text', 0, 0, NULL, 20, TRUE, 'metatags');
+        	$c->add('show_editor', false, 'select', 0, 0, 1, 40, TRUE, 'metatags');
         default :
             break;
 	}
@@ -329,8 +330,8 @@ function plugin_autotags_metatags($op, $content = '', $autotag = '') {
 	if ($op == 'tagname' ) {
 		return $_METATAGS_CONF['tagname'];
 	} else if ($op == 'parse') {
-		// Let editors see the autotag but hide them for non-editors
-		if (!SEC_hasRights('story.edit')) {
+		// Let editors see the autotag but hide them for non-editors, if configured
+		if (!SEC_hasRights('story.edit') || $_METATAGS_CONF['show_editor'] == false) {
 			$content = str_replace($autotag['tagstr'], '', $content);
 		}
 

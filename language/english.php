@@ -52,6 +52,7 @@ $LANG_confignames['metatags'] = array(
 	'keywords'    => 'Default keywords (comma separated)',
 	'description' => 'Default description',
 	'sp_php'      => 'Execute PHP in staticpages',
+	'show_editor' => 'Display autotags for content edtiors',
 );
 
 $LANG_configsubgroups['metatags'] = array(
