@@ -351,6 +351,16 @@ function plugin_geticon_metatags()
     return $retval;
 }
 
+/*
+ * Return a link to the help element for this configuration option
+ *
+ */
+
+function plugin_getconfigelementhelp_metatags($element, $doclang )
+{
+    return array('http://www.glfusion.org/wiki/doku.php/metatags:start#configuration',2);
+}
+
 /**
 * Returns encoding
 */
