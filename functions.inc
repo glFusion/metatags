@@ -96,6 +96,8 @@ function plugin_upgrade_metatags() {
 			$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, 'metatags');
         	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description','au' => 'author','author' => 'author','gen' => 'generator','generator' => 'generator','robots' => 'robots',), '*text', 0, 0, NULL, 20, TRUE, 'metatags');
         	$c->add('show_editor', false, 'select', 0, 0, 1, 40, TRUE, 'metatags');
+        case '1.0.4' :
+            // no db / config changes
         default :
             break;
 	}
