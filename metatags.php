@@ -42,6 +42,6 @@ $_METATAGS_CONF = array();
 $_METATAGS_CONF['pi_name']          = 'metatags';
 $_METATAGS_CONF['pi_display_name']  = 'MetaTags';
 $_METATAGS_CONF['pi_version']       = '1.0.5';
-$_METATAGS_CONF['gl_version']       = '1.1.5';
+$_METATAGS_CONF['gl_version']       = '1.1.9';
 $_METATAGS_CONF['pi_url']           = 'http://www.glfusion.org/';
 ?>

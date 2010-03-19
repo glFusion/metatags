@@ -180,7 +180,7 @@ function METATAGS_getStaticpage($id) {
 	$sql = "SELECT sp_content, sp_php "
 		 . "FROM {$_TABLES['staticpage']} "
 		 . "WHERE " . SP_getPerms()
-		 . " AND (sp_id = '" . addslashes($id) . "') ";
+		 . " AND (sp_id = '" . DB_escapeString($id) . "') ";
 
 	$result = DB_query($sql);
 
@@ -258,7 +258,7 @@ function plugin_getheadercode_metatags() {
 		case 'article':
 			$sql = "SELECT introtext, bodytext "
 				 . "FROM {$_TABLES['stories']} "
-				 . "WHERE (sid = '" . addslashes($id) . "') "
+				 . "WHERE (sid = '" . DB_escapeString($id) . "') "
 				 . COM_getPermSQL('AND')
 				 . COM_getTopicSQL('AND');
 			$result = DB_query($sql);
