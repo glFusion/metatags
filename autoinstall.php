@@ -35,6 +35,8 @@ if (!defined ('GVERSION')) {
 
 global $_DB_dbms;
 
+global $_METATAGS_CONF;
+
 require_once $_CONF['path'].'plugins/metatags/functions.inc';
 require_once $_CONF['path'].'plugins/metatags/metatags.php';
 
