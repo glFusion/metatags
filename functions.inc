@@ -97,6 +97,7 @@ function plugin_upgrade_metatags() {
         	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description','au' => 'author','author' => 'author','gen' => 'generator','generator' => 'generator','robots' => 'robots',), '*text', 0, 0, NULL, 20, TRUE, 'metatags');
         	$c->add('show_editor', false, 'select', 0, 0, 1, 40, TRUE, 'metatags');
         case '1.0.4' :
+        case '1.0.5' :
             // no db / config changes
         default :
             break;
@@ -142,7 +143,7 @@ function METATAGS_esc($str) {
 		$str
 	);
 
-    $encoding = METATAGS_getEncodingt();
+    $encoding = COM_getEncodingt();
 
 	return htmlspecialchars($str, ENT_QUOTES, $encoding);
 }
@@ -186,7 +187,7 @@ function METATAGS_getStaticpage($id) {
 
 	if (!DB_error() AND (DB_numRows($result) == 1)) {
 		$A = DB_fetchArray($result);
-		$sp_content = stripslashes($A['sp_content']);
+		$sp_content = $A['sp_content'];
 		$sp_php     = $A['sp_php'];
 
 		if ($_METATAGS_CONF['sp_php']) {
@@ -264,7 +265,7 @@ function plugin_getheadercode_metatags() {
 			$result = DB_query($sql);
 			if (!DB_error() AND (DB_numRows($result) == 1)) {
 				$A = DB_fetchArray($result);
-				$target = stripslashes($A['introtext'] . ' ' . $A['bodytext']);
+				$target = $A['introtext'] . ' ' . $A['bodytext'];
 			}
 
 			break;
@@ -327,16 +328,19 @@ function plugin_getheadercode_metatags() {
 *
 */
 function plugin_autotags_metatags($op, $content = '', $autotag = '') {
-	global $_CONF, $_METATAGS_CONF;
+	global $_CONF, $_METATAGS_CONF, $LANG_METATAGS;
 
 	if ($op == 'tagname' ) {
 		return $_METATAGS_CONF['tagname'];
+	} else if ($op == 'tagusage' ) {
+	    return;
+	} else if ($op == 'desc' ) {
+	    return $LANG_METATAGS['desc_meta'];
 	} else if ($op == 'parse') {
 		// Let editors see the autotag but hide them for non-editors, if configured
 		if (!SEC_hasRights('story.edit') || $_METATAGS_CONF['show_editor'] == false) {
 			$content = str_replace($autotag['tagstr'], '', $content);
 		}
-
 		return $content;
 	}
 }
@@ -361,36 +365,5 @@ function plugin_geticon_metatags()
 function plugin_getconfigelementhelp_metatags($element, $doclang )
 {
     return array('http://www.glfusion.org/wiki/doku.php/metatags:start#configuration',2);
-}
-
-/**
-* Returns encoding
-*/
-function METATAGS_getEncodingt() {
-	global $_CONF, $LANG_CHARSET;
-
-	static $encoding = null;
-
-    $valid_charsets = array('iso-8859-1','iso-8859-15','utf-8','cp866','cp1251','cp1252','koi8-r','big5','gb2312','big5-hkscs','shift_jis sjis','euc-jp');
-
-	if ($encoding === null) {
-		if (isset($LANG_CHARSET)) {
-			$encoding = $LANG_CHARSET;
-		} else if (isset($_CONF['default_charset'])) {
-			$encoding = $_CONF['default_charset'];
-		} else {
-			$encoding = 'iso-8859-1';
-		}
-	}
-
-	$encoding = strtolower($encoding);
-
-	if ( in_array($encoding,$valid_charsets) ) {
-	    return $encoding;
-	} else {
-	    return 'iso-8859-1';
-	}
-
-	return $encoding;
 }
 ?>

@@ -38,6 +38,7 @@ if (!defined ('GVERSION')) {
 $LANG_METATAGS = array (
     'plugin'            => 'メタタグ',
 	'admin'		        => 'メタタグ',
+	'desc_meta'         => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}',
 );
 
 // Localization of the Admin Configuration UI
