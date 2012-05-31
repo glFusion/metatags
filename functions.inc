@@ -98,7 +98,7 @@ function plugin_upgrade_metatags() {
         	$c->add('show_editor', false, 'select', 0, 0, 1, 40, TRUE, 'metatags');
         case '1.0.4' :
         case '1.0.5' :
-            // no db / config changes
+            DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='".$_METATAGS_CONF['pi_name']." Admin'");
         default :
             break;
 	}

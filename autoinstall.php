@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2012 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -54,7 +54,7 @@ $INSTALL_plugin['metatags'] = array(
                         'url'       => $_METATAGS_CONF['pi_url'],
                         'display'   => $_METATAGS_CONF['pi_display_name']),
 
-    array('type' => 'group', 'group' => $_METATAGS_CONF['pi_name'].' Admin', 'desc' => 'Users in this group can administer the Metatags plugin', 'variable' => 'admin_group_id', 'addroot' => true),
+    array('type' => 'group', 'group' => $_METATAGS_CONF['pi_name'].' Admin', 'desc' => 'Users in this group can administer the Metatags plugin', 'variable' => 'admin_group_id', 'addroot' => true, 'admin' => true),
     array('type' => 'feature', 'feature' => 'metatags.edit', 'desc' => 'Access to Metatags editor', 'variable' => 'admin_feature_id'),
     array('type' => 'mapping', 'group' => 'admin_group_id', 'feature' => 'admin_feature_id', 'log' => 'Adding MetaTags feature to the MetaTags admin group'),
 );
