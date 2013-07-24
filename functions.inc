@@ -233,13 +233,13 @@ function plugin_getheadercode_metatags() {
 	if ($_CONF['url_rewrite']) {
 		if (preg_match("|article\.php/(.*)(/print)?$|i", $uri, $match)) {
 			$type = 'article';
-		} else if (preg_match("|staticpages/index\.php/(.*)(/print)?$|i", $uri, $match)) {
+		} else if (preg_match("|page\.php/(.*)(/print)?$|i", $uri, $match)) {
 			$type = 'staticpages';
 		}
 	} else {
 		if (preg_match("|article\.php\?story=(.*)(&mode=print)?$|i", $uri, $match)) {
 			$type = 'article';
-		} else if (preg_match("|staticpages/index\.php\?page=(.*)(&disp_mode=print)?$|i", $uri, $match)) {
+		} else if (preg_match("|page\.php\?page=(.*)(&disp_mode=print)?$|i", $uri, $match)) {
 			$type = 'staticpages';
 		}
 	}
