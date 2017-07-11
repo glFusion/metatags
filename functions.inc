@@ -72,43 +72,14 @@ function plugin_chkVersion_metatags() {
 }
 
 /**
-* Upgrade the plugin
+*   Upgrade the plugin
 *
-* Universal Plugin:  modify/uncomment use it
-*
-* @return   boolean TRUE (= success)
+*   @return boolean     TRUE (= success)
 */
-function plugin_upgrade_metatags() {
-	global $_CONF, $_TABLES, $_METATAGS_CONF;
-
-	$result = DB_query("SELECT pi_version FROM {$_TABLES['plugins']} WHERE (pi_name = 'metatags')");
-	$A = DB_fetchArray($result);
-	$pi_version = $A['pi_version'];		// Version info stored in database
-
-	// Do upgrading
-
-	switch ($pi_version) {
-		case '1.0.0':
-		case '1.0.1':
-		case '1.0.2':
-		case '1.0.3':
-		    $c = config::get_instance();
-			$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, 'metatags');
-        	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description','au' => 'author','author' => 'author','gen' => 'generator','generator' => 'generator','robots' => 'robots',), '*text', 0, 0, NULL, 20, TRUE, 'metatags');
-        	$c->add('show_editor', false, 'select', 0, 0, 1, 40, TRUE, 'metatags');
-        case '1.0.4' :
-        case '1.0.5' :
-            DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='".$_METATAGS_CONF['pi_name']." Admin'");
-        default :
-            break;
-	}
-
-	// Update plugin info
-
-	$result = DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '".$_METATAGS_CONF['pi_version']."' WHERE (pi_name = 'metatags')");
-	COM_errorLog(ucfirst("metatags") . " plugin was successfully updated to version {$_METATAGS_CONF['pi_version']}.");
-
-	return TRUE;
+function plugin_upgrade_metatags()
+{
+    require_once __DIR__ . '/upgrade.inc.php';
+    return METATAGS_do_upgrade();
 }
 
 
@@ -173,7 +144,7 @@ function METATAGS_str($index, $noesc = FALSE) {
 * @param  id  string  staticpage id
 * @return     string  page content
 */
-function METATAGS_getStaticpage($id) {
+function DEPRECATEMETATAGS_getStaticpage($id) {
 	global $_CONF, $_TABLES, $_SP_CONF, $_METATAGS_CONF;
 
 	$retval = '';
@@ -221,7 +192,7 @@ function METATAGS_getStaticpage($id) {
 /**
 * Return <meta> tags
 */
-function plugin_getheadercode_metatags() {
+function DEPRECATEplugin_getheadercode_metatags() {
 	global $_CONF, $_TABLES, $_METATAGS_CONF;
 
 	$retval = '';
@@ -327,23 +298,40 @@ function plugin_getheadercode_metatags() {
 * Implements the [meta:] autotag.
 *
 */
-function plugin_autotags_metatags($op, $content = '', $autotag = '') {
-	global $_CONF, $_METATAGS_CONF, $LANG_METATAGS;
+function plugin_autotags_metatags($op, $content = '', $autotag = '')
+{
+    global $_CONF, $_METATAGS_CONF, $LANG_METATAGS;
 
-	if ($op == 'tagname' ) {
-		return $_METATAGS_CONF['tagname'];
-	} else if ($op == 'tagusage' ) {
-	    return;
-	} else if ($op == 'desc' ) {
-	    return $LANG_METATAGS['desc_meta'];
-	} else if ($op == 'parse') {
-		// Let editors see the autotag but hide them for non-editors, if configured
-		if (!SEC_hasRights('story.edit') || $_METATAGS_CONF['show_editor'] == false) {
-			$content = str_replace($autotag['tagstr'], '', $content);
-		}
-		return $content;
-	}
+    static $tokens = NULL;
+    if ($tokens === NULL) {
+        $tokens = array_keys($_METATAGS_CONF['replace']);
+    }
+
+    switch ($op) {
+    case 'tagname':
+        return $_METATAGS_CONF['tagname'];
+    case 'tagusage':
+        return;
+    case 'desc':
+        return $LANG_METATAGS['desc_meta'];
+    case 'parse':
+        $key = strtolower($autotag['parm1']);
+        $value = trim($autotag['parm2']);
+        if (in_array($key, $tokens) && ($value != '')) {
+            $out = outputHandler::getInstance();
+            $out->addMeta('name', $_METATAGS_CONF['replace'][$key],
+                    $value, HEADER_PRIO_NORMAL);
+        }
+
+        // Let editors see the autotag but hide them for non-editors,
+        // if so configured
+        if ($_METATAGS_CONF['show_editor'] == false || !SEC_hasRights('story.edit')) {
+            $content = str_replace($autotag['tagstr'], '', $content);
+        }
+       return $content;
+    }
 }
+
 
 /*
  * Return the metatags icon
