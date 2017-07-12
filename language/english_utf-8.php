@@ -53,8 +53,7 @@ $LANG_confignames['metatags'] = array(
     'description' => 'Default Description',
     'show_editor' => 'Display autotags for content edtiors',
     'add_author'  => 'Add article author name autmatically',
-    'def_author'  => 'Default Author name',
-    'def_generator' => 'Default Generator name',
+    'defaults'    => 'Default Meta Name Tags',
 );
 
 $LANG_configsubgroups['metatags'] = array(
@@ -63,7 +62,6 @@ $LANG_configsubgroups['metatags'] = array(
 
 $LANG_fs['metatags'] = array(
     'fs_main'       => 'Metatags Main Settings',
-    'fs_default'    => 'Default Values',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

@@ -53,9 +53,8 @@ $_META_DEFAULTS = array(
     ),
     'show_editor'   => false,   // show tags to editors in rendered contenta?
     'keywords'      => '',      // default keywords if no tag found in content
-    'def_author'    => '',      // default author string
     'add_author'    => false,   // True to add article author automatically
-    'def_generator' => '',      // default generator string
+    'defaults'      => array(),
 );
 
 /**
@@ -81,10 +80,8 @@ function plugin_initconfig_metatags()
     $c->add('replace', $_META_DEFAULTS['replace'], '*text', 0, 0, NULL, 20, TRUE, $pi);
     $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 30, TRUE, 'metatags');
     $c->add('show_editor', $_META_DEFAULTS['show_editor'], 'select', 0, 0, 1, 40, TRUE, $pi);
-    $c->add('fs_default', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, 'metatags');
-    $c->add('description', $_META_DEFAULTS['description'], 'text', 0, 1, NULL, 10, TRUE, $pi);
-    $c->add('def_author', $_META_DEFAULTS['def_author'], 'text', 0, 1, NULL, 20, TRUE, $pi);
-    $c->add('def_generator', $_META_DEFAULTS['def_generator'], 'text', 0, 1, NULL, 30, TRUE, $pi);
+    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 50, TRUE, $pi);
+    $c->add('defaults', $_META_DEFAULTS['defaults'], '*text', 0, 0, NULL, 60, TRUE, $pi);
 
     return TRUE;
 }

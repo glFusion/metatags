@@ -208,7 +208,8 @@ function plugin_templateSetVars_metatags($templatename, &$template)
 
     // If not displaying an article, or not configured to add the
     // author metatag, just return
-    if ($templatename != 'article' || !$_METATAGS_CONF['add_author']) {
+    if (!$_METATAGS_CONF['add_author'] ||
+        ($templatename != 'featuredarticle' && $templatename != 'article')) {
         return;
     }
 
@@ -261,9 +262,12 @@ function plugin_getheadercode_metatags()
     global $_TABLES, $_METATAGS_CONF;
 
     $out = outputHandler::getInstance();
-    foreach (array('generator', 'author') as $n) {
-        if ($_METATAGS_CONF[$n] != '') {
-            $out->addMeta('name', $n, $_METATAGS_CONF[$n], HEADER_PRIO_VERYLOW);
+    // Protect against running before plugin is updated
+    if (is_array($_METATAGS_CONF['defaults'])) {
+        foreach ($_METATAGS_CONF['defaults'] as $name=>$value) {
+            if (!empty($value)) {
+                $out->addMeta('name', $name, $value, HEADER_PRIO_VERYLOW);
+            }
         }
     }
     return '';      // Doesn't actually return a value
@@ -286,7 +290,6 @@ function plugin_autotags_metatags($op, $content = '', $autotag = '')
     if ($tokens === NULL) {
         $tokens = array_keys($_METATAGS_CONF['replace']);
     }
-
     switch ($op) {
     case 'tagname':
         return $_METATAGS_CONF['tagname'];
@@ -302,7 +305,6 @@ function plugin_autotags_metatags($op, $content = '', $autotag = '')
             $out->addMeta('name', $_METATAGS_CONF['replace'][$key],
                     $value, HEADER_PRIO_NORMAL);
         }
-
         // Let editors see the autotag but hide them for non-editors,
         // if so configured
         if ($_METATAGS_CONF['show_editor'] == false || !SEC_hasRights('story.edit')) {

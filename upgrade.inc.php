@@ -68,13 +68,19 @@ function METATAGS_do_upgrade()
     if (!COM_checkVersion($current_ver, '1.1.0')) {
         // upgrade to 1.1.0
         $current_ver = '1.1.0';
-        $c->del('sp_php', $pi_name);
+        $defaults = array();
+        if (!empty($_METATAGS_CONF['description'])) {
+            $defaults['description'] = $_METATAGS_CONF['description'];
+        }
+        if (!empty($_METATAGS_CONF['keywords'])) {
+            $defaults['keywords'] = $_METATAGS_CONF['keywords'];
+        }
+        $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 50, TRUE, $pi_name);
+        $c->add('defaults', $defaults, '*text', 0, 0, NULL, 60, TRUE, $pi_name);
+        $c->del('description', $pi_name);
         $c->del('keywords', $pi_name);
-	    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 0, 30, TRUE, $pi_name);
-	    $c->add('def_author', $_META_DEFAULTS['def_author'], 'text', 0, 1, NULL, 20, TRUE, $pi_name);
-        $c->add('def_generator', $_META_DEFAULTS['def_generator'], 'text', 0, 1, NULL, 30, TRUE, $pi_name);
-        DB_query("UPDATE {$_TABLES['conf_values']}
-                SET fieldset = 1 WHERE name='description' AND group_name = '$pi_name'");
+        $c->del('sp_php', $pi_name);
+        $c->del('fs_default', $pi_name);
         if (!METATAGS_do_set_version($current_ver)) return false;
     }
 
