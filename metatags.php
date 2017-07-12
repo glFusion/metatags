@@ -5,9 +5,6 @@
 // | metatags.php                                                             |
 // |                                                                          |
 // | Plugin configuration                                                     |
-// +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
 // | Based on the Meta Tags Plugin for Geeklog CMS                            |
 // | Copyright (C) 2009 by the following authors:                             |
 // |                                                                          |
@@ -35,13 +32,10 @@ if (!defined ('GVERSION')) {
     die ('This file can not be used on its own.');
 }
 
-$_METATAGS_CONF = array();
-
 // Plugin info
-
 $_METATAGS_CONF['pi_name']          = 'metatags';
 $_METATAGS_CONF['pi_display_name']  = 'MetaTags';
-$_METATAGS_CONF['pi_version']       = '1.0.7';
-$_METATAGS_CONF['gl_version']       = '1.3.0';
+$_METATAGS_CONF['pi_version']       = '1.1.0';
+$_METATAGS_CONF['gl_version']       = '1.6.0';
 $_METATAGS_CONF['pi_url']           = 'http://www.glfusion.org/';
 ?>
