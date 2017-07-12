@@ -110,7 +110,7 @@ function METATAGS_loadConfig() {
 /**
 * Returns a string escaped for HTML output
 */
-function METATAGS_esc($str) {
+function DEPRECATE_METATAGS_esc($str) {
 
 	$str = str_replace(
 		array('&lt;', '&gt;', '&amp;', '&quot;', '&#039;'),
@@ -126,7 +126,7 @@ function METATAGS_esc($str) {
 /**
 * Returns a lang var
 */
-function METATAGS_str($index, $noesc = FALSE) {
+function DEPRECATE_METATAGS_str($index, $noesc = FALSE) {
 	global $LANG_METATAGS;
 
 	if (isset($LANG_METATAGS[$index])) {
@@ -197,6 +197,8 @@ function DEPRECATE_METATAGS_getStaticpage($id) {
 /**
 *   Set template variables
 *   This function is used to create meta tags based on the current template.
+*   Currently, this just supports adding the article author if an article
+*   template is in use.
 *
 *   @param  string  $templatename   Template Name
 *   @param  object  $template       Template (not used)
@@ -220,15 +222,18 @@ function plugin_templateSetVars_metatags($templatename, &$template)
     } else {
         preg_match("|article\.php\?story=(.*)(&mode=print)?$|i", $uri, $match);
     }
+
+    // Validate the article ID
     $id = '';
     if (isset($match[1])) {
         $id = COM_applyFilter($match[1]);
-        if ($id == '') {
-            return;     // no article ID found
-        }
     }
+    if ($id == '') {
+        return;     // no article ID found
+    }
+
     // Get the author information for the tag. Prefer the attribution_author,
-    // if set, falling back to the submitting author.
+    // falling back to the submitting author.
     $sql = "SELECT uid, attribution_author
             FROM {$_TABLES['stories']}
             WHERE (sid = '" . DB_escapeString($id) . "')";
@@ -286,10 +291,6 @@ function plugin_autotags_metatags($op, $content = '', $autotag = '')
 {
     global $_CONF, $_METATAGS_CONF, $LANG_METATAGS;
 
-    static $tokens = NULL;
-    if ($tokens === NULL) {
-        $tokens = array_keys($_METATAGS_CONF['replace']);
-    }
     switch ($op) {
     case 'tagname':
         return $_METATAGS_CONF['tagname'];
@@ -300,7 +301,9 @@ function plugin_autotags_metatags($op, $content = '', $autotag = '')
     case 'parse':
         $key = strtolower($autotag['parm1']);
         $value = trim($autotag['parm2']);
-        if (in_array($key, $tokens) && ($value != '')) {
+        if (is_array($_METATAGS_CONF['replace']) &&
+                isset($_METATAGS_CONF['replace'][$key]) &&
+                !empty($value)) {
             $out = outputHandler::getInstance();
             $out->addMeta('name', $_METATAGS_CONF['replace'][$key],
                     $value, HEADER_PRIO_NORMAL);
