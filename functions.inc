@@ -47,14 +47,18 @@ if (file_exists($langfile)) {
 }
 
 /**
-* Include metatags config file
-*/
-require_once $_CONF['path'] . 'plugins/metatags/metatags.php';
-
-/**
 * Load the plugin configuration
 */
 METATAGS_loadConfig();
+
+/**
+* Include metatags config file
+*/
+require_once __DIR__ . '/metatags.php';
+if (is_file(__DIR__ . '/config.php')) {
+    // Include custom config overrides
+    include_once __DIR__ . '/config.php';
+}
 
 // +---------------------------------------------------------------------------+
 // | glFusion Plugin API Implementations                                       |
@@ -144,7 +148,7 @@ function METATAGS_str($index, $noesc = FALSE) {
 * @param  id  string  staticpage id
 * @return     string  page content
 */
-function DEPRECATEMETATAGS_getStaticpage($id) {
+function DEPRECATE_METATAGS_getStaticpage($id) {
 	global $_CONF, $_TABLES, $_SP_CONF, $_METATAGS_CONF;
 
 	$retval = '';
@@ -189,114 +193,90 @@ function DEPRECATEMETATAGS_getStaticpage($id) {
 	return $retval;
 }
 
+
 /**
-* Return <meta> tags
+*   Set template variables
+*   This function is used to create meta tags based on the current template.
+*
+*   @param  string  $templatename   Template Name
+*   @param  object  $template       Template (not used)
+*   @return void
 */
-function DEPRECATEplugin_getheadercode_metatags() {
-	global $_CONF, $_TABLES, $_METATAGS_CONF;
+function plugin_templateSetVars_metatags($templatename, &$template)
+{
+    global $_CONF, $_TABLES, $_METATAGS_CONF;
 
-	$retval = '';
-	$type   = '';
+    // If not displaying an article, or not configured to add the
+    // author metatag, just return
+    if ($templatename != 'article' || !$_METATAGS_CONF['add_author']) {
+        return;
+    }
 
-	// Check the current URL for ids
+    // Get the article ID from the URL.
 	$uri = strtolower(COM_getCurrentURL());
+    if ($_CONF['url_rewrite']) {
+        preg_match("|article\.php/(.*)(/print)?$|i", $uri, $match);
+    } else {
+        preg_match("|article\.php\?story=(.*)(&mode=print)?$|i", $uri, $match);
+    }
+    $id = '';
+    if (isset($match[1])) {
+        $id = COM_applyFilter($match[1]);
+        if ($id == '') {
+            return;     // no article ID found
+        }
+    }
+    // Get the author information for the tag. Prefer the attribution_author,
+    // if set, falling back to the submitting author.
+    $sql = "SELECT uid, attribution_author
+            FROM {$_TABLES['stories']}
+            WHERE (sid = '" . DB_escapeString($id) . "')";
+    $result = DB_query($sql);
+    if (!DB_error() AND (DB_numRows($result) == 1)) {
+        $A = DB_fetchArray($result, false);
+        $author = !empty($A['attribution_author']) ? $A['attribution_author'] :
+            COM_getDisplayName($A['uid']);
 
-	if ($_CONF['url_rewrite']) {
-		if (preg_match("|article\.php/(.*)(/print)?$|i", $uri, $match)) {
-			$type = 'article';
-		} else if (preg_match("|page\.php/(.*)(/print)?$|i", $uri, $match)) {
-			$type = 'staticpages';
-		}
-	} else {
-		if (preg_match("|article\.php\?story=(.*)(&mode=print)?$|i", $uri, $match)) {
-			$type = 'article';
-		} else if (preg_match("|page\.php\?page=(.*)(&disp_mode=print)?$|i", $uri, $match)) {
-			$type = 'staticpages';
-		}
-	}
-
-	$id = '';
-	if (isset($match[1])) {
-		$id = COM_applyFilter($match[1]);
-		if ($id == '') {
-			$type= '';
-		}
-	}
-
-	// Retrieve the relevant content from DB
-	$target = '';
-
-	switch ($type) {
-		case 'article':
-			$sql = "SELECT introtext, bodytext "
-				 . "FROM {$_TABLES['stories']} "
-				 . "WHERE (sid = '" . DB_escapeString($id) . "') "
-				 . COM_getPermSQL('AND')
-				 . COM_getTopicSQL('AND');
-			$result = DB_query($sql);
-			if (!DB_error() AND (DB_numRows($result) == 1)) {
-				$A = DB_fetchArray($result);
-				$target = $A['introtext'] . ' ' . $A['bodytext'];
-			}
-
-			break;
-
-		case 'staticpages':
-			$target = METATAGS_getStaticpage($id);
-			break;
-
-		default:
-			// Do nothing
-			break;
-	}
-
-	$tags = array();
-
-	// Check if the content has the autotag
-	if ($target != '') {
-		$autotag = '|\[' . preg_quote($_METATAGS_CONF['tagname'], '|')
-				 . '\:([^\]]*)\]|i';
-		$num    = preg_match_all($autotag, $target, $match);
-		$tokens = array_keys($_METATAGS_CONF['replace']);
-
-		if ($num > 0) {
-			foreach ($match[1] as $m) {
-				list($key, $value) = explode(' ', $m, 2);
-				$key   = strtolower($key);
-				$value = trim($value);
-				if (in_array($key, $tokens) AND ($value != '')) {
-					$tags[$_METATAGS_CONF['replace'][$key]] = $value;
-				}
-			}
-		}
-	}
-
-	if (!isset($tags['keywords']) AND isset($_METATAGS_CONF['keywords'])) {
-		$tags['keywords'] = $_METATAGS_CONF['keywords'];
-	}
-
-	if (!isset($tags['description']) AND isset($_METATAGS_CONF['description'])) {
-		$tags['description'] = $_METATAGS_CONF['description'];
-	}
-
-	if (count($tags) > 0) {
-		// Convert autotags into <meta> headers
-		foreach ($tags as $key => $value) {
-			$retval .= '<meta name="' . $key . '" content="'
-					.  METATAGS_esc($value) . '"' . XHTML . '>' . LB;
-		}
-	}
-
-	if ($retval != '') {
-		$retval = LB . $retval;
-	}
-
-	return $retval;
+        if (!empty($author)) { 
+            $out = outputHandler::getInstance();
+            // Add the meta tag as "low", which is higher than the global
+            // default author.
+            $out->addMeta('name', 'author', $author, HEADER_PRIO_LOW);
+        }
+    }
+    return;
 }
 
+
 /**
-* Implements the [meta:] autotag.
+*   Add code to the HTML header.
+*   This function is called for every page load, so borrow it to add
+*   global default metatags. Tags are added to the outputHandler with a
+*   verylow priority so setTemplateVars and autotags can override them.
 *
+*   @return string  Header code to add, nothing in this case
+*/
+function plugin_getheadercode_metatags()
+{
+    global $_TABLES, $_METATAGS_CONF;
+
+    $out = outputHandler::getInstance();
+    foreach (array('generator', 'author') as $n) {
+        if ($_METATAGS_CONF[$n] != '') {
+            $out->addMeta('name', $n, $_METATAGS_CONF[$n], HEADER_PRIO_VERYLOW);
+        }
+    }
+    return '';      // Doesn't actually return a value
+}
+
+
+/**
+*   Implements the [meta:] autotag.
+*
+*   @param  string  $op         Operation to perform
+*   @param  string  $content    Page content
+*   @param  array   $autotag    Autotag information
+*   @return string      Modified content
 */
 function plugin_autotags_metatags($op, $content = '', $autotag = '')
 {
