@@ -38,6 +38,7 @@ if (!defined ('GVERSION')) {
     die ('This file can not be used on its own.');
 }
 
+global $_META_DEFAULTS;
 $_META_DEFAULTS = array(
     'tagname'   => 'meta',  // autotag name
     'replace'   => array(
@@ -74,14 +75,13 @@ function plugin_initconfig_metatags()
 
     $c = config::get_instance();
     $pi = $_METATAGS_CONF['pi_name'];
-    $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, 'metatags');
-    $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, 'metatags');
-    $c->add('tagname', $_META_DEFAULTS['meta'], 'text', 0, 0, NULL, 10, TRUE, $pi);
+    $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, $pi);
+    $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, $pi);
+    $c->add('tagname', $_META_DEFAULTS['tagname'], 'text', 0, 0, NULL, 10, TRUE, $pi);
     $c->add('replace', $_META_DEFAULTS['replace'], '*text', 0, 0, NULL, 20, TRUE, $pi);
-    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 30, TRUE, 'metatags');
+    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 30, TRUE, $pi);
     $c->add('show_editor', $_META_DEFAULTS['show_editor'], 'select', 0, 0, 1, 40, TRUE, $pi);
-    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 50, TRUE, $pi);
-    $c->add('defaults', $_META_DEFAULTS['defaults'], '*text', 0, 0, NULL, 60, TRUE, $pi);
+    $c->add('defaults', $_META_DEFAULTS['defaults'], '*text', 0, 0, NULL, 50, TRUE, $pi);
 
     return TRUE;
 }
