@@ -3,8 +3,8 @@
     <name>MetaTags</name>
     <description>Allows content authors to add meta keywords and descriptions to the HTML header for articles and static pages.</description>
     <version>1.1.0</version>
-    <glfusionversion>1.6.0</glfusionversion>
-    <phpversion>5.3.0</phpversion>
+    <glfusionversion>1.7.0</glfusionversion>
+    <phpversion>5.6.0</phpversion>
     <url>http://www.glfusion.org</url>
     <maintainer>Mark R. Evans</maintainer>
 </plugin>

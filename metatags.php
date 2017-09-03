@@ -36,6 +36,6 @@ if (!defined ('GVERSION')) {
 $_METATAGS_CONF['pi_name']          = 'metatags';
 $_METATAGS_CONF['pi_display_name']  = 'MetaTags';
 $_METATAGS_CONF['pi_version']       = '1.1.0';
-$_METATAGS_CONF['gl_version']       = '1.6.0';
+$_METATAGS_CONF['gl_version']       = '1.7.0';
 $_METATAGS_CONF['pi_url']           = 'http://www.glfusion.org/';
 ?>

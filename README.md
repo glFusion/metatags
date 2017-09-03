@@ -1,9 +1,11 @@
 # MetaTags Plugin for glFusion
-## Version: 1.0.7
+## Version: 1.1.0
 
 For the latest documentation, please see
 
-	http://www.glfusion.org/wiki/doku.php?id=metatags:start
+    http://www.glfusion.org/wiki/doku.php?id=metatags:start
+
+Requires glFusion 1.7.0 or higher.
 
 ## LICENSE
 
@@ -29,7 +31,7 @@ The Metatags plugin uses glFusion's autolink feature. If you have disabled it,
 please enable the feature in Configuration UI (Miscellaneous - Miscellaneous -
 Disable Autolinks).
 
-In an article or a staticpage, if you write [meta:key comma_separated_keywords]
+In an article or a staticpage, if you write `[meta:key comma_separated_keywords]`
 as an autotag, this tag will be converted into
 ```
   <meta name="keywords" content="comma_separated_keywords">.
@@ -38,14 +40,14 @@ For example, to have the following keywords shown in the header:
 ```
   [meta:key glfusion,cms,content management system]
 ```
-Would produce:
+The result:
 ```
   <meta name="keywords" content="glfusion,cms,content management system">.
 ```
 Likewise, if you write `[meta:desc description of the current page]`, the tag
 will be converted into `<meta name="description" content="description of the
 current page">`. In both cases, autotags themselves are not visible in the
-content except for the editor(s).
+content except to the editor(s) if configured.
 
 For example, to place a meta description in a story, use:
 ```
@@ -60,7 +62,7 @@ bracket(']').
 
 Recommendation: Put your metatag autotags in the &quot;bodytext&quot; section
 of your articles to prevent them from being used on the home page and in topic
-lists. If more than one of the same tag type, e.g. &quot;meta:desc&quot; is
+lists. If more than one of the same tag type and priority is
 found, the first one encountered will be used.
 
 ##CONFIGURATION
@@ -69,7 +71,7 @@ Once you have installed the Metatags plugin, it works well without manual
 configuration. However, if you would like to change the name of autotag
 (default value is 'meta') or keys translated into meta tag keys (default
 values are 'key' and 'desc'), you can set up the plugin through
-Configuration UI (http://yoursite/admin/configuration.php).
+Configuration UI `(http://yoursite/admin/configuration.php)`.
 
 #### Autotag name
 This is the name glFusion recognizes as an autotag (meta in the
@@ -88,17 +90,21 @@ Keys (the label left to an textarea) will be converted into meta tag keys
 
 #### Show tags to Editors?
 By default, the meta auto tag is hidden in the rendered content. If this is
-set to true, then story editors will see the actual meta data when vieing
+set to true, then story editors will see the actual meta data when viewing
 the content.
 
 #### Add Author
 To automatically add the author&apos;s name to article pages, select
-&quot;true&quot; here.
+&quot;true&quot; here. The metatag will be added at "LOW" priority so that
+any `[meta:author]` tag will override the author set in the article.
 
 #### Defaults
-You can create default tags that will appear on *every* page. Add an element
-with the desired tag name and value. Use the actuall meta name value here,
-not the replacement key from above.
+You can create default tags that will appear on *every* page if no autotag is
+found.. Add an element with the desired tag name and value. Use the actual
+meta name value here, not the replacement key from above.
+
+Use care with this option as duplicate metatags on your site can hurt rather
+than help your search engine rankings.
 
 ##INSTALLATION
 
