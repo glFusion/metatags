@@ -37,8 +37,8 @@ if (!defined ('GVERSION')) {
 
 $LANG_METATAGS = array(
     'plugin'            => 'metatags Plugin',
-	'admin'		        => 'metatags Plugin Admin',
-	'desc_meta'         => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}',
+    'admin'                => 'metatags Plugin Admin',
+    'desc_meta'         => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}',
 );
 
 // Localization of the Admin Configuration UI
@@ -48,12 +48,12 @@ $LANG_configsections['metatags'] = array(
 );
 
 $LANG_confignames['metatags'] = array(
-	'tagname'     => 'Autotag name',
-	'replace'     => 'Replace',
-	'keywords'    => 'Default keywords (comma separated)',
-	'description' => 'Default description',
-	'sp_php'      => 'Execute PHP in staticpages',
-	'show_editor' => 'Display autotags for content edtiors',
+    'tagname'     => 'Autotag name',
+    'replace'     => 'Replace',
+    'description' => 'Default Description',
+    'show_editor' => 'Display autotags for content edtiors',
+    'add_author'  => 'Add article author name autmatically',
+    'defaults'    => 'Default Meta Name Tags',
 );
 
 $LANG_configsubgroups['metatags'] = array(
@@ -61,7 +61,7 @@ $LANG_configsubgroups['metatags'] = array(
 );
 
 $LANG_fs['metatags'] = array(
-    'fs_main'        => 'Metatags Main Settings',
+    'fs_main'       => 'Metatags Main Settings',
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

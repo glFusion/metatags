@@ -38,6 +38,24 @@ if (!defined ('GVERSION')) {
     die ('This file can not be used on its own.');
 }
 
+$_META_DEFAULTS = array(
+    'tagname'   => 'meta',  // autotag name
+    'replace'   => array(
+        'key'       => 'keywords',
+        'keywords'  => 'keywords',
+        'desc'      => 'description',
+        'description' => 'description',
+        'au'        => 'author',
+        'author'    => 'author',
+        'gen'       => 'generator',
+        'generator' => 'generator',
+        'robots'    => 'robots',
+    ),
+    'show_editor'   => false,   // show tags to editors in rendered contenta?
+    'keywords'      => '',      // default keywords if no tag found in content
+    'add_author'    => false,   // True to add article author automatically
+    'defaults'      => array(),
+);
 
 /**
 * Initialize Metatags plugin configuration
@@ -50,19 +68,20 @@ if (!defined ('GVERSION')) {
 * @return   boolean     TRUE: success; FALSE: an error occurred
 *
 */
-function plugin_initconfig_metatags() {
-    global $_METATAGS_CONF;
+function plugin_initconfig_metatags()
+{
+    global $_METATAGS_CONF, $_META_DEFAULTS;
 
     $c = config::get_instance();
+    $pi = $_METATAGS_CONF['pi_name'];
     $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, 'metatags');
     $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, 'metatags');
-	$c->add('tagname', 'meta', 'text', 0, 0, NULL, 10, TRUE, 'metatags');
-	$c->add('replace', array('key' => 'keywords','keywords' => 'keywords','desc' => 'description','description' => 'description','au' => 'author','author' => 'author','gen' => 'generator','generator' => 'generator','robots' => 'robots',), '*text', 0, 0, NULL, 20, TRUE, 'metatags');
-	$c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, 'metatags');
-	$c->add('show_editor', false, 'select', 0, 0, 1, 40, TRUE, 'metatags');
-    $c->add('fs_default', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, 'metatags');
-	$c->add('keywords', NULL, 'text', 0, 0, NULL, 10, TRUE, 'metatags');
-	$c->add('description', NULL, 'text', 0, 0, NULL, 12, TRUE, 'metatags');
+    $c->add('tagname', $_META_DEFAULTS['meta'], 'text', 0, 0, NULL, 10, TRUE, $pi);
+    $c->add('replace', $_META_DEFAULTS['replace'], '*text', 0, 0, NULL, 20, TRUE, $pi);
+    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 30, TRUE, 'metatags');
+    $c->add('show_editor', $_META_DEFAULTS['show_editor'], 'select', 0, 0, 1, 40, TRUE, $pi);
+    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 50, TRUE, $pi);
+    $c->add('defaults', $_META_DEFAULTS['defaults'], '*text', 0, 0, NULL, 60, TRUE, $pi);
 
     return TRUE;
 }
