@@ -36,7 +36,7 @@ if (!defined ('GVERSION')) {
 }
 
 $LANG_METATAGS = array(
-    'plugin'            => 'Metatags',
+    'plugin'            => 'metatags',
 	'admin'		        => 'Metatags',
 	'desc_meta'         => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}',
 );
@@ -48,12 +48,12 @@ $LANG_configsections['metatags'] = array(
 );
 
 $LANG_confignames['metatags'] = array(
-	'tagname'     => 'Autotag name',
-	'replace'     => 'Replace',
-	'keywords'    => 'Default keywords (comma separated)',
-	'description' => 'Default description',
-	'sp_php'      => 'Execute PHP in staticpages',
-	'show_editor' => 'Display autotags for content edtiors',
+    'tagname'     => 'Autotag name',
+    'replace'     => 'Replace',
+    'description' => 'Default Description',
+    'show_editor' => 'Display autotags for content edtiors',
+    'add_author'  => 'Add article author name autmatically',
+    'defaults'    => 'Default Meta Name Tags',
 );
 
 $LANG_configsubgroups['metatags'] = array(

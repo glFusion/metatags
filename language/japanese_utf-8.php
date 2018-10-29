@@ -30,30 +30,31 @@
 // |                                                                          |
 // +--------------------------------------------------------------------------+
 
-// this file can't be used on its own
 if (!defined ('GVERSION')) {
-    die ('This file can not be used on its own.');
+    die ('This file cannot be used on its own.');
 }
 
-$LANG_METATAGS = array (
-    'plugin'            => 'メタタグ',
-	'admin'		        => 'メタタグ',
-	'desc_meta'         => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}',
+###############################################################################
+
+$LANG_METATAGS = array(
+    'plugin' => 'メタタグ',
+    'admin' => 'メタタグ',
+    'desc_meta' => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}'
 );
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['metatags'] = array(
-    'label' => $LANG_METATAGS['plugin'],
-    'title' => $LANG_METATAGS['plugin'] . 'の設定',
+    'label' => 'メタタグ',
+    'title' => 'メタタグの設定'
 );
 
 $LANG_confignames['metatags'] = array(
-	'tagname'     => '自動タグ名',
-	'replace'     => '置換ルール',
-	'keywords'    => 'keywordsの初期値（コンマで区切る）',
-	'description' => 'descriptionの初期値',
-	'sp_php'      => '静的ページでPHPを実行する',
-	'show_editor' => 'Display autotags for content edtiors',
+    'tagname' => '自動タグ名',
+    'replace' => '置換ルール',
+    'description' => 'descriptionの初期値',
+    'show_editor' => 'Display autotags for content edtiors',
+    'add_author' => 'Add article author name autmatically',
+    'defaults' => 'Default Meta Name Tags'
 );
 
 $LANG_configsubgroups['metatags'] = array(
@@ -61,14 +62,15 @@ $LANG_configsubgroups['metatags'] = array(
 );
 
 $LANG_fs['metatags'] = array(
-    'fs_main'        => $LANG_METATAGS['plugin'] . 'の主要設定',
+    'fs_main' => 'メタタグの主要設定'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['metatags'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    1 => array('はい' => true, 'いいえ' => false),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
 );
+
 ?>

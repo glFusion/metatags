@@ -30,15 +30,16 @@
 // |                                                                          |
 // +--------------------------------------------------------------------------+
 
-// this file can't be used on its own
 if (!defined ('GVERSION')) {
-    die ('This file can not be used on its own.');
+    die ('This file cannot be used on its own.');
 }
 
+###############################################################################
+
 $LANG_METATAGS = array(
-    'plugin'            => 'Metatags',
-	'admin'		        => 'Metatags',
-	'desc_meta'         => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}',
+    'plugin' => 'Metatags',
+    'admin' => 'Metatags',
+    'desc_meta' => 'Places the keywords into the meta tags in the HTML header. {<a href="http://www.glfusion.org/wiki/doku.php/metatags:start" target="_blank">options</a>}'
 );
 
 // Localization of the Admin Configuration UI
@@ -48,10 +49,12 @@ $LANG_configsections['metatags'] = array(
 );
 
 $LANG_confignames['metatags'] = array(
-	'tagname'     => 'Autotag naam',
-	'replace'     => 'Vervang',
-	'keywords'    => 'Standaard sleutelwoorden (comma gescheiden)',
-	'description' => 'Standaard beschrijving',
+    'tagname' => 'Autotag naam',
+    'replace' => 'Vervang',
+    'description' => 'Standaard beschrijving',
+    'show_editor' => 'Display autotags for content edtiors',
+    'add_author' => 'Add article author name autmatically',
+    'defaults' => 'Default Meta Name Tags'
 );
 
 $LANG_configsubgroups['metatags'] = array(
@@ -59,14 +62,15 @@ $LANG_configsubgroups['metatags'] = array(
 );
 
 $LANG_fs['metatags'] = array(
-    'fs_main'        => 'Metatags Hoofd Instellingen',
+    'fs_main' => 'Metatags Hoofd Instellingen'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['metatags'] = array(
     0 => array('Ja' => 1, 'Nee' => 0),
-    1 => array('Ja' => TRUE, 'Nee' => FALSE),
+    1 => array('Ja' => true, 'Nee' => false),
     9 => array('Ga naar pagina' => 'item', 'Toon Lijst' => 'list', 'Toon Startpagina' => 'home', 'Toon Beheerpagina' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );
+
 ?>
