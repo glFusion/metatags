@@ -46,6 +46,14 @@ if (file_exists($langfile)) {
 	include_once $_CONF['path'] . 'plugins/metatags/language/english.php';
 }
 
+if (version_compare(GVERSION,'2.0.0','lt')) {
+    if (isset($LANG_configSelect['metatags']) && !isset($LANG_configselects['metatags'])) {
+        foreach ($LANG_configSelect['metatags'] AS $cfgItem) {
+            $LANG_configselects['metatags'][] = array_flip($cfgItem);
+        }
+    }
+}
+
 /**
 * Load the plugin configuration
 */
