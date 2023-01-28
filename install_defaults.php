@@ -1,88 +1,142 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | MetaTags Plugin for glFusion                                             |
-// +--------------------------------------------------------------------------+
-// | install_defaults.php                                                     |
-// |                                                                          |
-// | Plugin Configuration                                                     |
-// +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
-// |                                                                          |
-// | Mark R. Evans          mark AT glfusion DOT org                          |
-// |                                                                          |
-// | Based on the Meta Tags Plugin for Geeklog CMS                            |
-// | Copyright (C) 2009 by the following authors:                             |
-// |                                                                          |
-// | mystral-kk             - geeklog AT mystral-kk DOT net                   |
-// +--------------------------------------------------------------------------+
-// |                                                                          |
-// | This program is free software; you can redistribute it and/or            |
-// | modify it under the terms of the GNU General Public License              |
-// | as published by the Free Software Foundation; either version 2           |
-// | of the License, or (at your option) any later version.                   |
-// |                                                                          |
-// | This program is distributed in the hope that it will be useful,          |
-// | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
-// | GNU General Public License for more details.                             |
-// |                                                                          |
-// | You should have received a copy of the GNU General Public License        |
-// | along with this program; if not, write to the Free Software Foundation,  |
-// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.          |
-// |                                                                          |
-// +--------------------------------------------------------------------------+
-
+/**
+ * Configuration Defaults for the Metatags plugin for glFusion.
+ * Based on the Meta Tags Plugin for Geeklog CMS.
+ *
+ * @author      Mark R. Evans <mark AT glfusion DOT org>
+ * @copyright   Copyright (c) 2009-2022 Mark R. Evans <mark AT glfusion DOT org>
+ * @copyright   Copyright (c) 2009 mystral-kk <geeklog AT mystral-kk DOT net>
+ * @package     metatags
+ * @version     v1.2.0
+ * @license     http://opensource.org/licenses/gpl-2.0.php
+ *              GNU Public License v2 or later
+ * @filesource
+ */
 if (!defined ('GVERSION')) {
     die ('This file can not be used on its own.');
 }
 
-global $_META_DEFAULTS;
-$_META_DEFAULTS = array(
-    'tagname'   => 'meta',  // autotag name
-    'replace'   => array(
-        'key'       => 'keywords',
-        'keywords'  => 'keywords',
-        'desc'      => 'description',
-        'description' => 'description',
-        'au'        => 'author',
-        'author'    => 'author',
-        'gen'       => 'generator',
-        'generator' => 'generator',
-        'robots'    => 'robots',
+/** @var global config data */
+global $metaConfigData;
+$metaConfigData = array(
+    array(
+        'name' => 'sg_main',
+        'default_value' => NULL,
+        'type' => 'subgroup',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => NULL,
+        'sort' => 0,
+        'set' => true,
+        'group' => 'metatags',
     ),
-    'show_editor'   => false,   // show tags to editors in rendered contenta?
-    'keywords'      => '',      // default keywords if no tag found in content
-    'add_author'    => false,   // True to add article author automatically
-    'defaults'      => array(),
+    array(
+        'name' => 'fs_main',
+        'default_value' => NULL,
+        'type' => 'fieldset',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => NULL,
+        'sort' => 0,
+        'set' => true,
+        'group' => 'metatags',
+    ),
+    array(
+        'name' => 'tagname',        // autotag name
+        'default_value' => 'meta',
+        'type' => 'text',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => 0,
+        'sort' => 10,
+        'set' => true,
+        'group' => 'metatags',
+    ),
+    array(
+        'name' => 'replace',        // allow short names in autotags
+        'default_value' => array(
+            'key'       => 'keywords',
+            'keywords'  => 'keywords',
+            'desc'      => 'description',
+            'description' => 'description',
+            'au'        => 'author',
+            'author'    => 'author',
+            'gen'       => 'generator',
+            'generator' => 'generator',
+            'robots'    => 'robots',
+        ),
+        'type' => '*text',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => 0,
+        'sort' => 20,
+        'set' => true,
+        'group' => 'metatags',
+    ),
+    array(
+        'name' => 'show_editor',    // show tags to editors in rendered contents?
+        'default_value' => false,
+        'type' => 'select',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => 0,
+        'sort' => 30,
+        'set' => true,
+        'group' => 'metatags',
+    ),
+    array(
+        'name' => 'add_author',     // True to add article author automatically
+        'default_value' => false,
+        'type' => 'select',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => 0,
+        'sort' => 40,
+        'set' => true,
+        'group' => 'metatags',
+    ),
+    array(
+        'name' => 'defaults',
+        'default_value' => array(),
+        'type' => '*text',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => 0,
+        'sort' => 50,
+        'set' => true,
+        'group' => 'metatags',
+    ),
+    array(
+        'name' => 'def_props',
+        'default_value' => array(),
+        'type' => '*text',
+        'subgroup' => 0,
+        'fieldset' => 0,
+        'selection_array' => 0,
+        'sort' => 60,
+        'set' => true,
+        'group' => 'metatags',
+    ),
 );
 
+
 /**
-* Initialize Metatags plugin configuration
-*
-* Creates the database entries for the configuation if they don't already
-* exist.  Initial values will be taken from $_METATAGS_DEFAULT
-* if available (e.g. from an old config.php), uses $_METATAGS_DEFAULT
-* otherwise.
-*
-* @return   boolean     TRUE: success; FALSE: an error occurred
-*
-*/
+ * Initialize Metatags plugin configuration.
+ *
+ * @return  boolean     True on success, False on error (not used)
+ */
 function plugin_initconfig_metatags()
 {
-    global $_METATAGS_CONF, $_META_DEFAULTS;
+    global $metaConfigData;
 
     $c = config::get_instance();
-    $pi = $_METATAGS_CONF['pi_name'];
-    $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, TRUE, $pi);
-    $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, TRUE, $pi);
-    $c->add('tagname', $_META_DEFAULTS['tagname'], 'text', 0, 0, NULL, 10, TRUE, $pi);
-    $c->add('replace', $_META_DEFAULTS['replace'], '*text', 0, 0, NULL, 20, TRUE, $pi);
-    $c->add('add_author', $_META_DEFAULTS['add_author'], 'select', 0, 0, 1, 30, TRUE, $pi);
-    $c->add('show_editor', $_META_DEFAULTS['show_editor'], 'select', 0, 0, 1, 40, TRUE, $pi);
-    $c->add('defaults', $_META_DEFAULTS['defaults'], '*text', 0, 0, NULL, 50, TRUE, $pi);
-
-    return TRUE;
+    if (!$c->group_exists('metatags')) {
+        USES_lib_install();
+        foreach ($metaConfigData AS $cfgItem) {
+            _addConfigItem($cfgItem);
+        }
+    } else {
+        Log::system(Log::ERROR, 'initconfig error: Metatags config group already exists');
+    }
+    return true;
 }
-?>

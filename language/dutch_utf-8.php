@@ -51,10 +51,10 @@ $LANG_configsections['metatags'] = array(
 $LANG_confignames['metatags'] = array(
     'tagname' => 'Autotag naam',
     'replace' => 'Vervang',
-    'description' => 'Standaard beschrijving',
     'show_editor' => 'Display autotags for content edtiors',
-    'add_author' => 'Add article author name autmatically',
-    'defaults' => 'Default Meta Name Tags'
+    'add_author'  => 'Add article author name autmatically',
+    'defaults'    => 'Default Meta Name Tags',
+    'def_props'   => 'Default Meta Property Tags',
 );
 
 $LANG_configsubgroups['metatags'] = array(
@@ -65,12 +65,7 @@ $LANG_fs['metatags'] = array(
     'fs_main' => 'Metatags Hoofd Instellingen'
 );
 
-// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['metatags'] = array(
-    0 => array('Ja' => 1, 'Nee' => 0),
-    1 => array('Ja' => true, 'Nee' => false),
-    9 => array('Ga naar pagina' => 'item', 'Toon Lijst' => 'list', 'Toon Startpagina' => 'home', 'Toon Beheerpagina' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+$LANG_configSelect['metatags'] = array(
+    0 => array(1 => 'Ja', 0 => 'Nee'),
+    1 => array(TRUE => 'Ja', FALSE => 'Nee'),
 );
-
-?>
