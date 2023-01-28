@@ -2,7 +2,7 @@
     <id>metatags</id>
     <name>MetaTags</name>
     <description>Allows content authors to add meta keywords and descriptions to the HTML header for articles and static pages.</description>
-    <version>1.1.0.1</version>
+    <version>1.2.0</version>
     <glfusionversion>2.0.0</glfusionversion>
     <phpversion>7.4.0</phpversion>
     <url>http://www.glfusion.org</url>
