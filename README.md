@@ -48,20 +48,24 @@ Would produce
 ```
   <meta name="description" content="This is a description of this story">
 ```
-Caution: Your keywords and description MUST NOT contain a right square
-bracket(']').
 
 To create a meta "property" rather than a "name", use "metaprop" as the tag
 name. E.g.
 ```
-  [metaprop:og:image https://yoursite/logo.png]
+  [metaprop:OG:image https://yoursite/logo.png]
 ```
 to create
 ```
   <meta property="og:image" content="https://yoursite/logo.png" />
 ```
+### *Important*
+  * Your keywords and description MUST NOT contain a right square bracket(']').
+  * If you with to set an OpenGraph property, e.g. `og:image`, and you are using
+the Smiley plugin, you must capitalize at least the first character of the tag.
+Otherwise the Smiley plugin will convert `:o` to an emoticon.
 
-Recommendation: Put your metatag autotags in the &quot;bodytext&quot; section
+### *Recommended*
+Put your metatag autotags in the &quot;bodytext&quot; section
 of your articles to prevent them from being used on the home page and in topic
 lists. If more than one of the same tag type and priority is
 found, the first one encountered will be used.
@@ -69,7 +73,7 @@ found, the first one encountered will be used.
 ## Configuration
 
 Once you have installed the Metatags plugin, it works well without manual
-configuration. However, if you would like to change the name of autotag
+configuration. However, if you would like to change the name of the autotag
 (default value is 'meta') or keys translated into meta tag keys (default
 values are 'key' and 'desc'), you can set up the plugin through
 Configuration UI `(http://yoursite/admin/configuration.php)`.
