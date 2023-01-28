@@ -53,8 +53,9 @@ $LANG_confignames['metatags'] = array(
     'replace' => '置換ルール',
     'description' => 'descriptionの初期値',
     'show_editor' => 'Display autotags for content edtiors',
-    'add_author' => 'Add article author name autmatically',
-    'defaults' => 'Default Meta Name Tags'
+    'add_author'  => 'Add article author name autmatically',
+    'defaults'    => 'Default Meta Name Tags',
+    'def_props'   => 'Default Meta Property Tags',
 );
 
 $LANG_configsubgroups['metatags'] = array(
@@ -65,12 +66,7 @@ $LANG_fs['metatags'] = array(
     'fs_main' => 'メタタグの主要設定'
 );
 
-// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['metatags'] = array(
-    0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
+$LANG_configSelect['metatags'] = array(
+    0 => array(1 => 'はい', 0 => 'いいえ'),
+    1 => array(TRUE => 'はい', FALSE => 'いいえ'),
 );
-
-?>

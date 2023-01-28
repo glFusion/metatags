@@ -43,15 +43,7 @@ clearstatcache();
 if (file_exists($langfile)) {
 	include_once $langfile;
 } else {
-	include_once $_CONF['path'] . 'plugins/metatags/language/english.php';
-}
-
-if (version_compare(GVERSION,'2.0.0','lt')) {
-    if (isset($LANG_configSelect['metatags']) && !isset($LANG_configselects['metatags'])) {
-        foreach ($LANG_configSelect['metatags'] AS $cfgItem) {
-            $LANG_configselects['metatags'][] = array_flip($cfgItem);
-        }
-    }
+	include_once $_CONF['path'] . 'plugins/metatags/language/english_utf-8.php';
 }
 
 /**
@@ -251,7 +243,7 @@ function plugin_templateSetVars_metatags($templatename, &$template)
         $author = !empty($A['attribution_author']) ? $A['attribution_author'] :
             COM_getDisplayName($A['uid']);
 
-        if (!empty($author)) { 
+        if (!empty($author)) {
             $out = outputHandler::getInstance();
             // Add the meta tag as "low", which is higher than the global
             // default author.
@@ -283,6 +275,13 @@ function plugin_getheadercode_metatags()
             }
         }
     }
+    if (is_array($_METATAGS_CONF['def_props'])) {
+        foreach ($_METATAGS_CONF['def_props'] as $name=>$value) {
+            if (!empty($value)) {
+                $out->addMeta('property', $name, $value, HEADER_PRIO_VERYLOW);
+            }
+        }
+    }
     return '';      // Doesn't actually return a value
 }
 
@@ -301,20 +300,35 @@ function plugin_autotags_metatags($op, $content = '', $autotag = '')
 
     switch ($op) {
     case 'tagname':
-        return $_METATAGS_CONF['tagname'];
+        return array(
+            $_METATAGS_CONF['tagname'],
+            $_METATAGS_CONF['tagname'] . 'prop',
+        );
     case 'tagusage':
         return;
     case 'desc':
         return $LANG_METATAGS['desc_meta'];
     case 'parse':
+        switch ($autotag['tag']) {
+        case $_METATAGS_CONF['tagname'] . 'prop':
+            $metaname = 'property';
+            break;
+        case $_METATAGS_CONF['tagname']:
+        default:
+            $metaname = 'name';
+            break;
+        }
         $key = strtolower($autotag['parm1']);
         $value = trim($autotag['parm2']);
-        if (is_array($_METATAGS_CONF['replace']) &&
-                isset($_METATAGS_CONF['replace'][$key]) &&
-                !empty($value)) {
+        if (
+            is_array($_METATAGS_CONF['replace']) &&
+            isset($_METATAGS_CONF['replace'][$key])
+        ) {
+            $key = $_METATAGS_CONF['replace'][$key];
+        }
+        if (!empty($value)) {
             $out = outputHandler::getInstance();
-            $out->addMeta('name', $_METATAGS_CONF['replace'][$key],
-                    $value, HEADER_PRIO_NORMAL);
+            $out->addMeta($metaname, $key, $value, HEADER_PRIO_HIGH);
         }
         // Let editors see the autotag but hide them for non-editors,
         // if so configured

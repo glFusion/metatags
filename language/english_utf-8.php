@@ -50,10 +50,10 @@ $LANG_configsections['metatags'] = array(
 $LANG_confignames['metatags'] = array(
     'tagname'     => 'Autotag name',
     'replace'     => 'Replace',
-    'description' => 'Default Description',
     'show_editor' => 'Display autotags for content edtiors',
     'add_author'  => 'Add article author name autmatically',
     'defaults'    => 'Default Meta Name Tags',
+    'def_props'   => 'Default Meta Property Tags',
 );
 
 $LANG_configsubgroups['metatags'] = array(
@@ -64,11 +64,7 @@ $LANG_fs['metatags'] = array(
     'fs_main'       => 'Metatags Main Settings',
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['metatags'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+$LANG_configSelect['metatags'] = array(
+    0 => array(1 => 'True', 0 => 'False'),
+    1 => array(1 => 'True', 0 => 'False'),
 );
-?>

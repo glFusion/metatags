@@ -1,7 +1,10 @@
 # Metatags plugin for glFusion - Changelog
 
-## Ver 1.1.0 (October 6, 2017)
+## Ver 1.2.0 (TBD)
+- Implement property tags to allow OpenGraph elements.
+- Update priority for defaults and autotags.
 
+## Ver 1.1.0 (October 6, 2017)
 - Implement plugin_autotag function, support all content types
 - Set tags via outputHandler class with priority
 - Remove PHP in Staticpage option, no longer needed

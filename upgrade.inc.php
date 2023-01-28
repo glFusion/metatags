@@ -1,27 +1,27 @@
 <?php
 /**
-*   Upgrade routines for the Metatags plugin.
-*
-*   @author     Lee Garner <lee@leegarner.com>
-*   @copyright  Copyright (c) 2017 Lee Garner <lee@leegarner.com>
-*   @package    metatags
-*   @version    1.1.0
-*   @license    http://opensource.org/licenses/gpl-2.0.php
-*               GNU Public License v2 or later
-*   @filesource
-*/
+ * Upgrade routines for the Metatags plugin.
+ *
+ * @author      Lee Garner <lee@leegarner.com>
+ * @copyright   Copyright (c) 2017-2022 Lee Garner <lee@leegarner.com>
+ * @package     metatags
+ * @version     v1.2.0
+ * @license     http://opensource.org/licenses/gpl-2.0.php
+ *              GNU Public License v2 or later
+ * @filesource
+ */
 
 /** Include the default configuration values */
 require_once __DIR__ . '/install_defaults.php';
 
 
 /**
-*   Perform the upgrade starting at the current version.
-*
-*   @since  version 0.4.0
-*   @return integer                 Error code, 0 for success
-*/
-function METATAGS_do_upgrade()
+ * Perform the upgrade starting at the current version.
+ *
+ * @since   v0.4.0
+ * @return  boolean     True for success, False on error
+ */
+function METATAGS_do_upgrade($dvlp=false)
 {
     global $_CONF, $_TABLES, $_METATAGS_CONF, $_META_DEFAULTS, $_PLUGIN_INFO;
 
@@ -45,9 +45,6 @@ function METATAGS_do_upgrade()
     if (!COM_checkVersion($current_ver, '1.0.4')) {
         // upgrade to 1.0.4
         $current_ver = '1.0.4';
-           $c->add('sp_php', false, 'select', 0, 0, 1, 30, TRUE, $pi_name);
-           $c->add('replace', $_META_DEFAULTS['replace'], '*text', 0, 0, NULL, 20, TRUE, $pi_name);
-           $c->add('show_editor', $_META_DEFAULTS['show_editor'], 'select', 0, 0, 1, 40, TRUE, $pi_name);
         if (!METATAGS_do_set_version($current_ver)) return false;
     }
 
@@ -84,6 +81,12 @@ function METATAGS_do_upgrade()
         if (!METATAGS_do_set_version($current_ver)) return false;
     }
 
+    // Update any configuration item changes
+    USES_lib_install();
+    global $metaConfigData;
+    require_once __DIR__ . '/install_defaults.php';
+    _update_config('metatags', $metaConfigData);
+
     CTL_clearCache($pi_name);
     COM_errorLog("Successfully updated the {$_METATAGS_CONF['pi_display_name']} Plugin", 1);
     return true;
@@ -91,13 +94,13 @@ function METATAGS_do_upgrade()
 
 
 /**
-*   Update the plugin version number in the database.
-*   Called at each version upgrade to keep up to date with
-*   successful upgrades.
-*
-*   @param  string  $ver    New version to set
-*   @return boolean         True on success, False on failure
-*/
+ * Update the plugin version number in the database.
+ * Called at each version upgrade to keep up to date with
+ * successful upgrades.
+ *
+ * @param   string  $ver    New version to set
+ * @return  boolean         True on success, False on failure
+ */
 function METATAGS_do_set_version($ver)
 {
     global $_TABLES, $_METATAGS_CONF;
@@ -118,5 +121,3 @@ function METATAGS_do_set_version($ver)
         return true;
     }
 }
-
-?>

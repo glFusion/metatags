@@ -1,19 +1,19 @@
 # MetaTags Plugin for glFusion
-## Version: 1.1.0
+## Version: 1.2.0
 
 For the latest documentation, please see https://www.glfusion.org/wiki/glfusion:plugins:metatags:start
 
-Requires glFusion 1.7.0 or higher.
+Requires glFusion 2.0.0 or higher.
 
 ## Overview
 
-The Metatags plugin allows you to set metatags in the  meta tags in HTML
+The Metatags plugin allows you to set metatags in the meta tags in HTML
 &lt;head&gt; section according to the page content. Metatags are implemented
 using autotags and support any content type;
 
 ```
 <meta name="keywords" content="some,key,words">
-<meta name="descrition" content="Some description">
+<meta name="description" content="Some description">
 ```
 
 ## Usage
@@ -48,10 +48,24 @@ Would produce
 ```
   <meta name="description" content="This is a description of this story">
 ```
-Caution: Your keywords and description MUST NOT contain a right square
-bracket(']').
 
-Recommendation: Put your metatag autotags in the &quot;bodytext&quot; section
+To create a meta "property" rather than a "name", use "metaprop" as the tag
+name. E.g.
+```
+  [metaprop:OG:image https://yoursite/logo.png]
+```
+to create
+```
+  <meta property="og:image" content="https://yoursite/logo.png" />
+```
+### *Important*
+  * Your keywords and description MUST NOT contain a right square bracket(']').
+  * If you with to set an OpenGraph property, e.g. `og:image`, and you are using
+the Smiley plugin, you must capitalize at least the first character of the tag.
+Otherwise the Smiley plugin will convert `:o` to an emoticon.
+
+### *Recommended*
+Put your metatag autotags in the &quot;bodytext&quot; section
 of your articles to prevent them from being used on the home page and in topic
 lists. If more than one of the same tag type and priority is
 found, the first one encountered will be used.
@@ -59,7 +73,7 @@ found, the first one encountered will be used.
 ## Configuration
 
 Once you have installed the Metatags plugin, it works well without manual
-configuration. However, if you would like to change the name of autotag
+configuration. However, if you would like to change the name of the autotag
 (default value is 'meta') or keys translated into meta tag keys (default
 values are 'key' and 'desc'), you can set up the plugin through
 Configuration UI `(http://yoursite/admin/configuration.php)`.
@@ -67,7 +81,10 @@ Configuration UI `(http://yoursite/admin/configuration.php)`.
 #### Autotag name
 
 This is the name glFusion recognizes as an autotag (meta in the
-above USAGE)
+above USAGE).
+
+To create autotags for a meta "property", use this name as a prefix
+followed by "prop", e.g. "metaprop".
 
 #### Replace
 
@@ -94,13 +111,15 @@ To automatically add the author&apos;s name to article pages, select
 any `[meta:author]` tag will override the author set in the article.
 
 #### Defaults
-
 You can create default tags that will appear on *every* page if no autotag is
-found.. Add an element with the desired tag name and value. Use the actual
+found. Add an element with the desired tag name and value. Use the actual
 meta name value here, not the replacement key from above.
 
 Use care with this option as duplicate metatags on your site can hurt rather
 than help your search engine rankings.
+
+  * Name Tags - These elements will appear as `<meta name="key" content="value" />`
+  * Property Tags - These elements will appear as `<meta property="key" content="value" />`
 
 ## Installation
 
